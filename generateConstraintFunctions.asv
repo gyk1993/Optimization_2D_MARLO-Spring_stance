@@ -115,8 +115,8 @@ matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_ddy_', domainName], 'v
 
 
 %% Generate Dynamics Constraint function
-% D(q)*ddq + H(q,dq) +DampingSpringTorque- Bu - J'(q)*F = 0
-constraint = D*ddq + C*dq + G +DampingSpringTorque- B*u - J.'*F;
+% D(q)*ddq + H(q,dq) - Bu - J'(q)*F = 0
+constraint = D*ddq + C*dq + G - B*u - J.'*F;
 vars = [q;dq;ddq;u;F].';
 J_constraint = jacobian(constraint, vars);
 matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_dynamics_', domainName], 'vars', {vars});
