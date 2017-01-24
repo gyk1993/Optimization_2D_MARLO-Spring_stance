@@ -57,14 +57,20 @@ cd(MODEL_PATH)
 
 %% Select Model
 
-Model='flight';
+Model='dynamic';
 switch lower(Model)     %add cases as needed
 
     case {'dynamic'}  % Standard SS Model with stance on RIGHT Leg
         springs=1;
         springsLeft=1;
-        HipPositionChoice=1;
+        HipPositionChoice=2;
         disp('Building SS Model')
+        
+    case {'dynamic_stance_spring'}
+        springs=1;
+        springsLeft=0;
+        HipPositionChoice=2;
+        disp('Building SS Model with springs only on stance leg')
 
     case {'dynamicreduced'}  % Reduced SS Model...no springs
         springs=0;
@@ -105,13 +111,13 @@ end
 %% Set up coordinates
 
 if and(springs,springsLeft)
-    q=[qT;q1R;q2R;qgr1R;qgr2R;q1L;q2L;qgr1L;qgr2L];
-    dq=[dqT;dq1R;dq2R;dqgr1R;dqgr2R;dq1L;dq2L;dqgr1L;dqgr2L];
+    q=[qT;q1R;q2R;q1L;q2L;qgr1R;qgr2R;qgr1L;qgr2L];
+    dq=[dqT;dq1R;dq2R;dq1L;dq2L;dqgr1R;dqgr2R;dqgr1L;dqgr2L];
 elseif springs
-    q=[qT;q1R;q2R;qgr1R;qgr2R;q1L;q2L];
-    dq=[dqT;dq1R;dq2R;dqgr1R;dqgr2R;dq1L;dq2L];
+    q=[qT;q1R;q2R;q1L;q2L;qgr1R;qgr2R];
+    dq=[dqT;dq1R;dq2R;dq1L;dq2L;dqgr1R;dqgr2R];
 else
-    q=[qT;q1R;q2R;q1L;q2L]; % this is the selected case, q and dq should be in R5.
+    q=[qT;q1R;q2R;q1L;q2L];
     dq=[dqT;dq1R;dq2R;dq1L;dq2L];
 end
 
@@ -465,6 +471,11 @@ switch lower(Model)
         matlabFunction(PE, KE, KET, KE1R, KE2R, KE3R, KE4R, KEm1R, KEm2R, KE1L, KE2L, KE3L, KE4L, KEm1L, KEm2L, 'file', [AUTOGEN_PATH ,'\EnergiesAtrias2D'], 'vars', {q,dq}, 'outputs', EnergiesCellArrayString);
      
         % Save Workspace
+        Work_name = 'Mat\Work_Symbolic_2D_ATRIAS_Lagrange_JWG_';
+        Work_name2=[Work_name,Model,'_',datestr(now,30)];
+        eval(['save  ',Work_name2])
+        
+    case {'dynamic_stance_spring'}
         Work_name = 'Mat\Work_Symbolic_2D_ATRIAS_Lagrange_JWG_';
         Work_name2=[Work_name,Model,'_',datestr(now,30)];
         eval(['save  ',Work_name2])
