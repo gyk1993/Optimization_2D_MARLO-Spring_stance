@@ -176,6 +176,10 @@ R(:,4) = R_tmp(:,6); % swap q1R and q1L
 R(:,5) = R_tmp(:,7);
 R(:,6) = R_tmp(:,4);
 R(:,7) = R_tmp(:,5);
+R(:,8) = R_tmp(:,6);
+R(:,9) = R_tmp(:,7);
+
+
 
 q0p = sym('q0p_', [DOF,1]);
 dq0p = sym('dq0p_', [DOF,1]);
@@ -198,11 +202,12 @@ DN = subs(DN,q1R,qN(4));
 DN = subs(DN,q2R,qN(5));
 DN = subs(DN,q1L,qN(6));
 DN = subs(DN,q2L,qN(7));
+DN = subs(DN,qgr1R,qN(8));
+DN = subs(DN,qgr2R,qN(9));
 
 % subbing p4L
 p4L_end = p4L(1);
 p4L_end = subs(p4L_end,yH,qN(1));
-
 p4L_end = subs(p4L_end,zH,qN(2));
 p4L_end = subs(p4L_end,qT,qN(3));
 p4L_end = subs(p4L_end,q1R,qN(4));
@@ -211,7 +216,7 @@ p4L_end = subs(p4L_end,q1L,qN(6));
 p4L_end = subs(p4L_end,q2L,qN(7));
 
 % q Reset - C15
-constraint = R*q0p - qN + [p4L_end;0;0;0;0;0;0];
+constraint = q0p - R*qN + [qN(1)-q0p(1);zeros(DOF-1,1)];
 vars = [qN;q0p].';
 J_constraint = jacobian(constraint,vars);
 matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_qResetMap_', domainName], 'vars', {vars});
@@ -221,7 +226,7 @@ matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_qResetMap_', domainNam
 constraint = [JqN*R*dq0p; ...
           DN*(R*dq0p - dqN) - JqN.'*Fimp];
 dq0p = sym('dq0p_', [DOF,1]);
-vars = [qN;dqN;Fimp;dq0p].';
+vars = [qN;dqN;Fimp;dq0p].'; 
 J_constraint = jacobian(constraint,vars);
 matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_dqResetMap_', domainName], 'vars', {vars});
 matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_dqResetMap_', domainName], 'vars', {vars});
