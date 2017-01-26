@@ -57,19 +57,19 @@ cd(MODEL_PATH)
 
 %% Select Model
 
-Model='dynamic';
+Model='dynamic_stance_spring';
 switch lower(Model)     %add cases as needed
 
     case {'dynamic'}  % Standard SS Model with stance on RIGHT Leg
         springs=1;
         springsLeft=1;
-        HipPositionChoice=2;
+        HipPositionChoice=3;
         disp('Building SS Model')
         
     case {'dynamic_stance_spring'}
         springs=1;
         springsLeft=0;
-        HipPositionChoice=2;
+        HipPositionChoice=3;
         disp('Building SS Model with springs only on stance leg')
 
     case {'dynamicreduced'}  % Reduced SS Model...no springs

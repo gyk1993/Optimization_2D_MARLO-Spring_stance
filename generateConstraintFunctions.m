@@ -10,7 +10,7 @@
 % load in symbolic model
 
 % base attached to hip
- load('Work_Symbolic_2D_ATRIAS_Lagrange_JWG_dynamic_stance_spring_20170124T161147.mat')
+ load('Work_Symbolic_2D_ATRIAS_Lagrange_JWG_dynamic_stance_spring_20170125T175424.mat')
 
 % base attached to stance foot
 % load('Work_Symbolic_2D_ATRIAS_Lagrange_JWG_dynamicreduced_20150824T104338.mat')

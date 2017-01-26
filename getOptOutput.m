@@ -9,7 +9,7 @@ function [outputs] = getOptOutput(domains, x, varargin)
 parser = inputParser;
 addRequired(parser, 'domains');
 addRequired(parser, 'x');
-addParameter(parser, 'DisplayWarnings', false);
+addParameter(parser, 'DisplayWarnings',false);
 addParameter(parser, 'Tolerance', 0.1);
 addParameter(parser, 'ExcludeFromWarning', '');
 

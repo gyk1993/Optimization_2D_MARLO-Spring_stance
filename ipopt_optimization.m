@@ -82,7 +82,7 @@ tic
 [x, info] = ipopt(x0,funcs,options);
 toc
 
-[outputs] = getOptOutput(opt.domains, x)
+[outputs] = getOptOutput(opt.domains, x, 'DisplayWarnings', true)
 animateStep(outputs{1})
 
 
