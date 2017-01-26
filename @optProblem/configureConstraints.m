@@ -11,12 +11,12 @@ function [obj] = configureConstraints(obj, varargin)
         
         %% Dynamics
         
-        % dynamics equation: D*ddq + H(q,dq) + F_spring - Be*u - J^T(q)*Fe = 0;
+%         % dynamics equation: D*ddq + H(q,dq) + F_spring - Be*u - J^T(q)*Fe = 0;
         domain = addConstraint(domain,'Nonlinear-Equality',...
             'dynamics',9,1:domain.nNode,...
             {{'q','dq','ddq','u','Fe'}},-5e-6,5e-6);
-        
-        % holonomic constraint (position level): h(q) - hd = 0;
+%         
+%         % holonomic constraint (position level): h(q) - hd = 0;
         domain = addConstraint(domain,'Nonlinear-Equality',...
             'hInit',2,1,...
             {{'h'}},-5e-6,5e-6);
@@ -55,13 +55,13 @@ function [obj] = configureConstraints(obj, varargin)
         
         %% Physical Constraints
 
-        % Friction Cone
-        domain = addConstraint(domain,'Nonlinear-Inequality',...
-            'friction',1,1:domain.nNode,{{'Fe'}},0,0.5);
+%         Friction Cone
+%         domain = addConstraint(domain,'Nonlinear-Inequality',...
+%             'friction',1,4:domain.nNode,{{'Fe'}},0,0.5);
         
         % Vertical GRF
         domain = addConstraint(domain,'Nonlinear-Inequality',...
-            'GRF',1,4:domain.nNode,{{'Fe'}},0,650);
+            'GRF',1,2:domain.nNode,{{'Fe'}},0,1000);
         
         % Knee angles
         domain = addConstraint(domain,'Nonlinear-Inequality',...
