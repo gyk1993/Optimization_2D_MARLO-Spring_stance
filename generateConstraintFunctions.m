@@ -180,6 +180,19 @@ R(:,8) = R_tmp(:,6);
 R(:,9) = R_tmp(:,7);
 R=R';
 
+% Some functional matrix to modify q0p back to previous coordinate
+FM1=eye(DOF);
+FM1_tmp=FM1;
+FM1(:,4)=FM1_tmp(:,6);
+FM1(:,5)=FM1_tmp(:,7);
+FM1(:,6)=FM1_tmp(:,8);
+FM1(:,7)=FM1_tmp(:,9);
+FM1(:,8)=zeros(DOF,1);
+FM1(:,9)=zeros(DOF,1);
+
+FM2=zeros(DOF,DOF);
+FM2(4,4)=1;
+FM2(5,5)=1;
 
 
 q0p = sym('q0p_', [DOF,1]);
@@ -224,8 +237,8 @@ matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_qResetMap_', domainName]
 matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_qResetMap_', domainName], 'vars', {vars});
 
 % dq Reset - C16, C17
-constraint = [JqN*R*dq0p; ...
-          DN*(R*dq0p - dqN) - JqN.'*Fimp];
+constraint = [JqN*(FM1*dq0p+FM2*dqN); ...
+          DN*((FM1*dq0p+FM2*dqN) - dqN) - JqN.'*Fimp];
 dq0p = sym('dq0p_', [DOF,1]);
 vars = [qN;dqN;Fimp;dq0p].'; 
 J_constraint = jacobian(constraint,vars);

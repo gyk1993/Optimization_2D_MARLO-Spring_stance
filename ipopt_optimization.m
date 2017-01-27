@@ -79,6 +79,7 @@ funcs.jacobianstructure = @()IpoptJacobianStructure(opt.dimsConstr, ...
 
 % Start optimization
 tic
+% x0 = x;
 [x, info] = ipopt(x0,funcs,options);
 toc
 
