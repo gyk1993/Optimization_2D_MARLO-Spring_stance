@@ -239,24 +239,25 @@ matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_qResetMap_', domainName]
 matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_qResetMap_', domainName], 'vars', {vars});
 
 % dq Reset - C16, C17
-constraint = [JqN*(FM1*dq0p+FM2*dqN); ...
-          DN*((FM1*dq0p+FM2*dqN) - dqN) - JqN.'*Fimp];
-dq0p = sym('dq0p_', [DOF,1]);
+% constraint = [JqN*(FM1*dq0p+FM2*dqN); ...
+%           DN*((FM1*dq0p+FM2*dqN) - dqN) - JqN.'*Fimp];
+% dq0p = sym('dq0p_', [DOF,1]);
+% vars = [qN;dqN;Fimp;dq0p].'; 
+% J_constraint = jacobian(constraint,vars);
+% matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_dqResetMap_', domainName], 'vars', {vars});
+% matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_dqResetMap_', domainName], 'vars', {vars});
+
+% % dq Reset - for stance leg spring
+% temp_dqN=R*dqN;
+% Constraint = [temp_dqN([1,2,3,4,5,8,9])-dq0p([1,2,3,4,5,8,9]);
+temp_dqp=(FM1*dq0p+FM2*dqN);
+Constraint = [((FM1*dq0p+FM2*dqN) - dqN;
+               JqN*(FM1*dq0p+FM2*dqN)];
 vars = [qN;dqN;Fimp;dq0p].'; 
 J_constraint = jacobian(constraint,vars);
 matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_dqResetMap_', domainName], 'vars', {vars});
 matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_dqResetMap_', domainName], 'vars', {vars});
 
-% % dq Reset - for stance leg spring
-
-% temp_dqp=(FM1*dq0p+FM2*dqN);
-% constraint = [Select_matrix*((FM1*dq0p+FM2*dqN) - dqN);
-%                JqN*(FM1*dq0p+FM2*dqN)];
-% vars = [qN;dqN;Fimp;dq0p].'; 
-% J_constraint = jacobian(constraint,vars);
-% matlabFunction(constraint, 'file', [BUILD_OPT_PATH ,'\f_dqResetMap_', domainName], 'vars', {vars});
-% matlabFunction(J_constraint, 'file', [BUILD_OPT_PATH ,'\J_dqResetMap_', domainName], 'vars', {vars});
-% 
 
            
               
